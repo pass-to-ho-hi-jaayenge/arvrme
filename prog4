@@ -1,0 +1,149 @@
+PlacementIndicator
+
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+public class PlacementIndicator : MonoBehaviour
+{
+private ARRaycastManager rayManager;
+private GameObject visual;
+// Start is called before the first frame update
+void Start()
+{
+rayManager = FindObjectOfType<ARRaycastManager>();
+visual = transform.GetChild(0).gameObject;
+//hide placement indicator
+visual.SetActive(false);
+}
+// Update is called once per frame
+void Update()
+{
+List<ARRaycastHit> hits = new List<ARRaycastHit>();
+//shoot raycast from center of screen
+rayManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2),
+hits, TrackableType.Planes);
+//if we hit AR plane update position and rotation
+if (hits.Count > 0)
+{
+transform.position = hits[0].pose.position;
+transform.rotation = hits[0].pose.rotation;
+if (!visual.activeInHierarchy)
+visual.SetActive(true);
+}
+}
+}
+
+
+spawn_object
+
+
+using UnityEngine;
+public class spawn_object : MonoBehaviour
+{
+public GameObject objectToSpawn;
+private PlacementIndicator PlaceIndicate;
+void Start()
+{
+PlaceIndicate = FindObjectOfType<PlacementIndicator>();
+}
+// Update is called once per frame
+void Update()
+{
+if (Input.touchCount > 0 &&
+Input.touches[0].phase == TouchPhase.Began)
+{
+showobject();
+}
+}
+void showobject()
+{
+GameObject obj = Instantiate(objectToSpawn, 
+PlaceIndicate.transform.position, 
+PlaceIndicate.transform.rotation);
+}
+}
+
+
+SoluƟon Steps:
+1. Windows-> Package manager->install ARcore XR Plugin
+2. AR FoundaƟon
+3. Right Click- on hierarchy window> Add AR session origin or XR Session Origin
+4. AR/XR session
+5. Delete main camera
+6. Select AR Session origin or XR origin and add component AR Raycast,AR plane Manager
+9. Create Empty Game Object placement and create plane as child of this 
+10. select plane and remove mesh collider component
+11. import 2D image in unity
+12. create material give this image as reference in albedo and change shader unlit transparent
+13. add material to plane
+14 Import 3D model from Maximo (hƩps://www.mixamo.com/ ) and import two animaƟon idle and 
+run
+15. Add model in scene and create animator
+16. create animaƟon graph
+17 add animator controller as component to 3D model and create it as prefab by dragging it in 
+project window and delete it from hierarchy window
+18. Create empty game object SpawnManager
+19 create script PlacementIndicator attach to placement
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.XR.ARFoundation;
+using UnityEngine.XR.ARSubsystems;
+public class PlacementIndicator : MonoBehaviour
+{
+private ARRaycastManager rayManager;
+private GameObject visual;
+// Start is called before the first frame update
+void Start()
+{
+rayManager = FindObjectOfType<ARRaycastManager>();
+visual = transform.GetChild(0).gameObject;
+//hide placement indicator
+visual.SetActive(false);
+}
+// Update is called once per frame
+void Update()
+{
+List<ARRaycastHit> hits = new List<ARRaycastHit>();
+//shoot raycast from center of screen
+rayManager.Raycast(new Vector2(Screen.width / 2, Screen.height / 2),
+hits, TrackableType.Planes);
+//if we hit AR plane update position and rotation
+if (hits.Count > 0)
+{
+transform.position = hits[0].pose.position;
+transform.rotation = hits[0].pose.rotation;
+if (!visual.activeInHierarchy)
+visual.SetActive(true);
+}
+}
+}
+20 create script spawn_object attach to SpawnManager
+using UnityEngine;
+public class spawn_object : MonoBehaviour
+{
+public GameObject objectToSpawn;
+private PlacementIndicator PlaceIndicate;
+void Start()
+{
+PlaceIndicate = FindObjectOfType<PlacementIndicator>();
+}
+// Update is called once per frame
+void Update()
+{
+if (Input.touchCount > 0 &&
+Input.touches[0].phase == TouchPhase.Began)
+{
+showobject();
+}
+}
+void showobject()
+{
+GameObject obj = Instantiate(objectToSpawn, 
+PlaceIndicate.transform.position, 
+PlaceIndicate.transform.rotation);
+}
+}
+21. create reference in spawn_object for 3D model
+22. build apk and test applicaƟon in mobile
+Note: your mobile must support Google ARcore
