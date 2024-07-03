@@ -1,0 +1,89 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class SwitchWatch : MonoBehaviour
+{
+public GameObject obj1,obj2;
+// Start is called before the first frame update
+void Start()
+{
+obj1.SetActive(true);
+obj2.SetActive(false);
+}
+// Update is called once per frame
+public void btnNextClick()
+{
+obj1.SetActive(false);
+obj2.SetActive(true);
+}
+public void btnPrevClick()
+{
+obj1.SetActive(true);
+obj2.SetActive(false);
+}
+}
+
+
+Step 1: Vuforia Setup:
+* Create Vuforia account> Navigate to licenses> Get Basic -> click confirm license key
+ Click on license>-> Copy key
+ Click My account ->Target manager->Generate Database select Device
+* Generate a Vuforia database to store image target
+* load the target image sent on GCR or any img of choice
+* Download the created database and vuforia engine for Unity(Link in Downloads Tab)
+Step 2: Import Vuforia package and Database in Unity:
+* create a new 3D core project in unity
+* add the vuforia package and downloaded database to unity project
+* add AR camera by right clicking on hierarchy window (on Unity)[Vuforia Engine>AR camera]
+* on AR camera properƟes: Navigate to OPEN VUFORIA ENGINE CONFIGURATION
+* under license secƟon: copy the license key copied from Vuforia
+* right click on hierarchy> vuforia engine> image target> in inspector window
+ * image target type script> type: from database
+ Databse: name of vuforia database created earlier
+ Image target: Image loaded in database
+
+* Download and extract files from Lec6 zip file uploaded on GCR and import folder to unity
+* import the assets in Lec6 folder on unity and drag and drop the Watch 1 prefab to scene
+* on hierachy window ensure to make the watch model as child component of image target
+* shade the watch model using materials:
+ buckle: any color
+ case: black material with more smoothness and metallic texture
+ glass: rendering mode: transparent albedo: alpha value= 0
+ dial: textures> select dial image > shader: UI > default
+
+
+* repeat the same steps to add other watch models
+* create 2 UI buƩons to change the watch model on click
+* aƩach script to buƩons or create empty game object say manager
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class SwitchWatch : MonoBehaviour
+{
+public GameObject obj1,obj2;
+// Start is called before the first frame update
+void Start()
+{
+obj1.SetActive(true);
+obj2.SetActive(false);
+}
+// Update is called once per frame
+public void btnNextClick()
+{
+obj1.SetActive(false);
+obj2.SetActive(true);
+}
+public void btnPrevClick()
+{
+obj1.SetActive(true);
+obj2.SetActive(false);
+}
+}
+* iniƟalise the watches as gameobject references to the script
+* add on click condiƟon for both buƩons and tag the respecƟve funcƟons
+TesƟng:
+* save and run project
+* noƟce the webcam become acƟve
+* via a mobile phone, show the target image to webcam
+* check if watch model is visible
+* test buƩons to check if watch models change on buƩon click
